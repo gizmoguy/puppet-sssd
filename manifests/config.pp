@@ -56,6 +56,14 @@ class sssd::config (
 
       }
 
+      if $::operatingsystem == 'Ubuntu' and $::lsbdistcodename == 'wily' {
+        # We need to update apparmor config to workaround a bug
+        file { '/etc/apparmor.d/usr.sbin.sssd':
+          ensure  => file,
+          content => template("${module_name}/usr.sbin.sssd.erb"),
+        }
+      }
+
     }
 
     default: { }
