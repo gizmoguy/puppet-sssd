@@ -59,6 +59,21 @@ class sssd::params {
       $extra_packages_ensure = 'present'
       $manage_oddjobd        = false
 
+      case $::operatingsystem {
+        'Ubuntu' : {
+          if (versioncmp($::operatingsystemrelease, '15.04') >= 0) {
+            $service_provider = 'systemd'
+          } else {
+            $service_provider = 'upstart'
+          }
+        }
+        default: {
+          if (versioncmp($::operatingsystemmajrelease, '8') >= 0) {
+            $service_provider = 'systemd'
+          }
+        }
+      }
+
     }
 
     default: {
